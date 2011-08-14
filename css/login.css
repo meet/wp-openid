@@ -1,0 +1,28 @@
+#loginform {
+position: relative;
+padding-top: 16em;
+}
+
+#loginform label {
+color: #ccc;
+}
+
+#wp-submit {
+border-color: #ddd !important;
+background: #ccc !important;
+}
+
+#openid-login {
+position: relative;
+top: -22em;
+text-align: center;
+height: 0;
+}
+
+#openid-login p {
+margin: 1em;
+}
+
+#nav {
+display: none;
+}

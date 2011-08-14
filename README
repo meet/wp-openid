@@ -1,0 +1,8 @@
+WordPress OpenID Login
+======================
+
+Use OpenID to authenticate WordPress users.
+
+Requires `wp-openid-config.php` in the plugin folder to define:
+  $openid_login_provider = 'https://...';
+  $openid_login_email_domain = '...';
