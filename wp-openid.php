@@ -95,11 +95,12 @@ function openid_login_user($ax) {
   $username = $ax[$attrs['username']->type_uri][0];
   $groups = $ax[$attrs['groups']->type_uri][0];
   $user = get_userdatabylogin($username);
+  $role = 'contributor';
   if ( ! $user) {
     $id = wp_insert_user(array(
       'user_login' => $username,
       'user_email' => $username.'@'.$openid_login_email_domain,
-      'role' => 'contributor'
+      'role' => $role
     ));
     if (is_wp_error($id)) {
       wp_safe_redirect('/wp-login.php?action=openid-failed&message='.urlencode($id->get_error_message()));
@@ -110,11 +111,14 @@ function openid_login_user($ax) {
   }
   if ( ! $user) {
     wp_safe_redirect('/wp-login.php?action=openid-failed&message=WordPress user error');
-  } else {
-    wp_set_auth_cookie($user->ID, FALSE, TRUE);
-    do_action('wp_login', $user->user_login);
-    wp_safe_redirect(admin_url());
+    exit;
   }
+  if ( ! is_user_member_of_blog($user->ID, get_current_site()->ID)) {
+    add_user_to_blog(get_current_site()->ID, $user->ID, $role);
+  }
+  wp_set_auth_cookie($user->ID, FALSE, TRUE);
+  do_action('wp_login', $user->user_login);
+  wp_safe_redirect(admin_url());
   exit;
 }
 
